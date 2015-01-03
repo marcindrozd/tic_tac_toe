@@ -25,13 +25,23 @@ draw = """
 
 puts draw
 
-def update_board
+def update_board(value, mark)
   # replace the values with either X or O
   # hash.key(value) => returns key
+  board[board.key(value)] = mark
 end
 
 def reset_board
-  # reset board to default values if play again
+  # reset board to default values if play again // refactor into loop
+  board[:a] = 1
+  board[:b] = 2
+  board[:c] = 3
+  board[:d] = 4
+  board[:e] = 5
+  board[:f] = 6
+  board[:g] = 7
+  board[:h] = 8
+  board[:i] = 9
 end
 
 def switch_player
@@ -45,6 +55,8 @@ end
 
 def player_move
   # take the input and update the board
+  puts "Enter the number from the board to make your move:"
+  move = gets.chomp if valid_move?
 end
 
 def computer_move
@@ -52,9 +64,10 @@ def computer_move
   # select board.values if value != "X"
 end
 
-def valid_move?
+def valid_move?(move, board)
   # check if value exists if not = invalid move
   # e.g. board.values.include? "1"
+  board.values.include?(move)
 end
 
 def win?
@@ -68,6 +81,16 @@ def win?
 #         c = f = i
 #         a = e = i
 #         c = e = g
+end
+
+loop do
+  while true
+    puts "Enter the number from the board to make your move:"
+    move = gets.chomp
+    break if valid_move?(move, board)
+    puts "You cannot put your mark there! Please enter empty 1-9 field!"
+  end
+  puts "now other player moves"
 end
 
 # while !win? # or loop do
