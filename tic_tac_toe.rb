@@ -95,40 +95,49 @@ def win?(board)
   end
 end
 
-loop do
+def move_possible?(board)
+  possible_moves = board.values
+  possible_moves.delete("X")
+  possible_moves.delete("O")
+  !possible_moves.empty?
+end
+
+while true
+  if !move_possible?(board)
+    puts "It's a tie!"
+    break
+  end
   draw_board(board)
+  # check if any moves are still possible
   while true
     puts "Enter the number from the board to make your move:"
     move = gets.chomp
     break if valid_move?(move, board)
     puts "You cannot put your mark there! Please enter empty 1-9 field!"
   end
-  puts "now other player moves"
   # update_board
   update_board(move, "X", board)
   # check_win
   draw_board(board)
-  break if win?(board)
+  if win?(board)
+    puts "Player wins!"
+    break
+  end
   # computer move
+  # check if any moves are still possible
+  if !move_possible?(board)
+    puts "It's a tie!"
+    break
+  end
   possible_moves = board.values
   possible_moves.delete("X")
   possible_moves.delete("O")
   move = possible_moves.sample
   update_board(move, "O", board)
   draw_board(board)
-  break if win?(board)
+  if win?(board)
+    puts "Computer wins!"
+    break
+  end
 end
 
-puts "Player wins!"
-
-# while !win? # or loop do
-#   player_move
-#   check_winner # if win? break
-#   update and draw board
-#   switch_player
-#   computer_move
-#   check_winner # if win? break
-#   update and draw board
-#   switch_player # is it really necessary then? player and computer move should be enough
-#   perhaps nest another loop checking for play_again if yes = reset board
-# end
