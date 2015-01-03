@@ -11,20 +11,6 @@ board = {
   g: "7", h: "8", i: "9"
 }
 
-board_drawing = """
-     |     |     
-  #{board[:a]}  |  #{board[:b]}  |  #{board[:c]}   
-     |     |
------+-----+-----
-     |     |     
-  #{board[:d]}  |  #{board[:e]}  |  #{board[:f]}
-     |     |
------+-----+-----
-     |     |     
-  #{board[:g]}  |  #{board[:h]}  |  #{board[:i]}
-     |     |
-"""
-
 def draw_board(board)
   puts """
      |     |     
@@ -86,7 +72,7 @@ def valid_move?(move, board)
   board.values.include?(move)
 end
 
-def win?
+def win?(board)
 # check if values of winning condition are the same
 # check if all values have been replaced with either X or Y for draw
 # win if value of a = b = c
@@ -97,6 +83,16 @@ def win?
 #         c = f = i
 #         a = e = i
 #         c = e = g
+  if (board[:a] == board[:b] && board[:b] == board[:c]) ||
+    (board[:d] == board[:e] && board[:e] == board[:f]) ||
+    (board[:g] == board[:h] && board[:h] == board[:i]) ||
+    (board[:a] == board[:d] && board[:d] == board[:g]) ||
+    (board[:b] == board[:e] && board[:e] == board[:h]) ||
+    (board[:c] == board[:f] && board[:f] == board[:i]) ||
+    (board[:a] == board[:e] && board[:e] == board[:i]) ||
+    (board[:c] == board[:e] && board[:e] == board[:g])
+    true
+  end
 end
 
 loop do
@@ -111,7 +107,19 @@ loop do
   # update_board
   update_board(move, "X", board)
   # check_win
+  draw_board(board)
+  break if win?(board)
+  # computer move
+  possible_moves = board.values
+  possible_moves.delete("X")
+  possible_moves.delete("O")
+  move = possible_moves.sample
+  update_board(move, "O", board)
+  draw_board(board)
+  break if win?(board)
 end
+
+puts "Player wins!"
 
 # while !win? # or loop do
 #   player_move
