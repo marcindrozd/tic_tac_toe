@@ -1,5 +1,7 @@
 # Tic Tac Toe
 
+require 'pry'
+
 PLAYER_MARK = "X"
 COMPUTER_MARK = "O"
 
@@ -9,7 +11,7 @@ board = {
   g: "7", h: "8", i: "9"
 }
 
-draw = """
+board_drawing = """
      |     |     
   #{board[:a]}  |  #{board[:b]}  |  #{board[:c]}   
      |     |
@@ -23,9 +25,23 @@ draw = """
      |     |
 """
 
-puts draw
+def draw_board(board)
+  puts """
+     |     |     
+  #{board[:a]}  |  #{board[:b]}  |  #{board[:c]}   
+     |     |
+-----+-----+-----
+     |     |     
+  #{board[:d]}  |  #{board[:e]}  |  #{board[:f]}
+     |     |
+-----+-----+-----
+     |     |     
+  #{board[:g]}  |  #{board[:h]}  |  #{board[:i]}
+     |     |
+"""
+end
 
-def update_board(value, mark)
+def update_board(value, mark, board)
   # replace the values with either X or O
   # hash.key(value) => returns key
   board[board.key(value)] = mark
@@ -84,6 +100,7 @@ def win?
 end
 
 loop do
+  draw_board(board)
   while true
     puts "Enter the number from the board to make your move:"
     move = gets.chomp
@@ -91,6 +108,9 @@ loop do
     puts "You cannot put your mark there! Please enter empty 1-9 field!"
   end
   puts "now other player moves"
+  # update_board
+  update_board(move, "X", board)
+  # check_win
 end
 
 # while !win? # or loop do
