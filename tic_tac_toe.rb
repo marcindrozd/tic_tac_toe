@@ -7,6 +7,7 @@ board = {
 }
 
 def draw_board(board)
+  system "clear"
   puts """
      |     |     
   #{board[:a]}  |  #{board[:b]}  |  #{board[:c]}   
@@ -51,7 +52,6 @@ def win?(board)
     (board[:c] == board[:f] && board[:f] == board[:i]) ||
     (board[:a] == board[:e] && board[:e] == board[:i]) ||
     (board[:c] == board[:e] && board[:e] == board[:g])
-    true
   end
 end
 
@@ -63,12 +63,15 @@ def move_possible?(board)
 end
 
 while true
+  
   puts "TIC * TAC * TOE"
+  
   while true
     if !move_possible?(board)
       puts "It's a tie!"
       break
     end
+    
     draw_board(board)
 
     while true
@@ -103,6 +106,7 @@ while true
       break
     end
   end
+  
   puts "Play again? (y/n)"
   response = gets.chomp.downcase
   break if response != "y"
