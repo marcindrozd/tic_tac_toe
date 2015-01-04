@@ -1,10 +1,30 @@
 # Tic Tac Toe
+require 'pry'
 
 board = {
   a: "1", b: "2", c: "3", 
   d: "4", e: "5", f: "6", 
   g: "7", h: "8", i: "9"
 }
+
+winning_conditions = [[:a, :b, :c], [:d, :e, :f], [:g, :h, :i], [:a, :d, :g],
+                      [:b, :e, :h], [:c, :f, :i], [:a, :e, :i], [:c, :e, :g]]
+
+def two_in_a_row(board)
+  winning_conditions = [[:a, :b, :c], [:d, :e, :f], [:g, :h, :i], [:a, :d, :g],
+                      [:b, :e, :h], [:c, :f, :i], [:a, :e, :i], [:c, :e, :g]]
+  winning_conditions.each do |line|
+    if board.values_at(*line).count("X") == 2
+      potential_move = []
+      line.each do |item|
+        potential_move << item if board[item] != "X" && board[item] != "O"
+      end
+      return board[potential_move.first] if !potential_move.empty?
+    else
+      false
+    end
+  end
+end
 
 def draw_board(board)
   system "clear"
@@ -52,6 +72,7 @@ def win?(board)
     (board[:c] == board[:f] && board[:f] == board[:i]) ||
     (board[:a] == board[:e] && board[:e] == board[:i]) ||
     (board[:c] == board[:e] && board[:e] == board[:g])
+    true
   end
 end
 
@@ -94,10 +115,15 @@ while true
       break
     end
 
-    possible_moves = board.values
-    possible_moves.delete("X")
-    possible_moves.delete("O")
-    move = possible_moves.sample
+    if two_in_a_row(board).is_a?(String)
+      move = two_in_a_row(board)
+    else
+      possible_moves = board.values
+      possible_moves.delete("X")
+      possible_moves.delete("O")
+      move = possible_moves.sample
+    end
+
     update_board(move, "O", board)
     draw_board(board)
 
